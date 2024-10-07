@@ -1,0 +1,14 @@
+FROM nginx
+
+COPY ScreenSound.sln /usr/share/nginx/sln
+
+EXPOSE 80
+
+
+
+
+
+
+
+
+
