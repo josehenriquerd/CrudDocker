@@ -30,6 +30,30 @@ API RODANDO NO DOCKER HUB:
 
 <h6>Configuração da aplicação na Azure:<h6>
 
-1 - Conexão da maquina virtual
+Docker File:
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["ScreenSound.API/ScreenSound.API.csproj", "ScreenSound.API/"]
+COPY ["ScreenSound.Shared.Dados/ScreenSound.Shared.Dados.csproj", "ScreenSound.Shared.Dados/"]
+COPY ["ScreenSound.Shared.Modelos/ScreenSound.Shared.Modelos.csproj", "ScreenSound.Shared.Modelos/"]
+RUN dotnet restore "./ScreenSound.API/ScreenSound.API.csproj"
+COPY . .
+WORKDIR "/src/ScreenSound.API"
+RUN dotnet build "./ScreenSound.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Esta fase é usada para publicar o projeto de serviço a ser copiado para a fase final
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./ScreenSound.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+# Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ScreenSound.API.dll"]
+
+
 
 
