@@ -58,7 +58,36 @@ ENTRYPOINT ["dotnet", "ScreenSound.API.dll"]
 
 
 
-2. Conectar-se à Máquina Virtual
+# Conectar-se à Máquina Virtual
 Conecte-se à sua máquina virtual usando SSH. O comando pode ser semelhante ao seguinte, dependendo do seu sistema:
 
 <code>ssh your_username@<public_ip_address></code>
+
+#Instalar o Azure CLI na Máquina Virtual
+<code>
+sudo apt-get update
+sudo apt-get install curl apt-transport-https lsb-release gnupg
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+sudo apt-get update
+sudo apt-get install azure-cli
+sudo apt-get install -y apt-transport-https
+wget https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+sudo apt-get update
+sudo apt-get install -y dotnet-sdk-7.0
+az --version
+dotnet --version
+</code>
+
+#Instalar o Docker
+<code>
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install docker-ce
+sudo docker --version
+
+</code>
