@@ -49,6 +49,8 @@ ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./ScreenSound.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Esta fase é usada na produção ou quando executada no VS no modo normal (padrão quando não está usando a configuração de Depuração)
+
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
@@ -56,4 +58,7 @@ ENTRYPOINT ["dotnet", "ScreenSound.API.dll"]
 
 
 
+2. Conectar-se à Máquina Virtual
+Conecte-se à sua máquina virtual usando SSH. O comando pode ser semelhante ao seguinte, dependendo do seu sistema:
 
+<code>ssh your_username@<public_ip_address></code>
